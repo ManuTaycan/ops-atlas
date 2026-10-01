@@ -11,3 +11,7 @@ Articles grow from real solved cases. There is no prewritten topic catalog: a to
 - **Guides** walk through a diagnosis or change, explain why relevant steps are taken, and show how to interpret and verify the result.
 
 The [templates](templates/) provide starting points; use only sections that fit the case. For the boundaries of the project, see [Project scope](PROJECT_SCOPE.md). To turn a solved case into a safe, reusable article, see [Contributing](CONTRIBUTING.md).
+
+## First guide
+
+- [Troubleshoot blank Teams Speed Dial entries](docs/microsoft/teams/troubleshoot-blank-speed-dial-entries.md) — diagnose blank or unaddable entries, understand what the checks can and cannot show, and use an alternate calling path while the issue remains unresolved.
