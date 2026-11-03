@@ -1,0 +1,36 @@
+# OpenTofu/Terraform caches and local state: never publish lab inventory or secrets.
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+crash.log
+crash.*.log
+
+# Saved plans and JSON plan exports may contain sensitive values.
+*.tfplan
+*.tfplan.json
+plan.out
+plan.json
+
+# Private environment-specific inputs; tracked examples remain publishable.
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+.env
+.env.*
+!.env.example
+.local/
+
+# Keys, local CLI credentials, editor settings and accidental config copies.
+*.pem
+*.key
+*.pub
+id_rsa*
+id_ed25519*
+.terraformrc
+terraform.rc
+*.tf.bak
+*.tf.bak.*
+.vscode/
+
+# Keep .terraform.lock.hcl versioned after generating and reviewing it.

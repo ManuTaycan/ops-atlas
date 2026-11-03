@@ -12,6 +12,7 @@ Articles grow from real solved cases. There is no prewritten topic catalog: a to
 
 The [templates](templates/) provide starting points; use only sections that fit the case. For the boundaries of the project, see [Project scope](PROJECT_SCOPE.md). To turn a solved case into a safe, reusable article, see [Contributing](CONTRIBUTING.md).
 
-## First guide
+## Guides
 
 - [Troubleshoot blank Teams Speed Dial entries](docs/microsoft/teams/troubleshoot-blank-speed-dial-entries.md) — diagnose blank or unaddable entries, understand what the checks can and cannot show, and use an alternate calling path while the issue remains unresolved.
+- [Provision a Proxmox LXC with OpenTofu](docs/proxmox/opentofu-lxc-bootstrap.md) — follow a real bootstrap case, diagnose bridge/state/ACL failures, and distinguish a running OS container from a complete recovery workflow. Includes a [sanitized OpenTofu example](examples/proxmox-lxc/README.md) and a safe path for editing an existing deployment in VS Code.
