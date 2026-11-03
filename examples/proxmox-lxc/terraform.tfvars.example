@@ -1,0 +1,11 @@
+# FICTIONAL EXAMPLE ONLY. None of these values identifies the original lab.
+# Copy to terraform.tfvars, then replace every value with your private settings.
+# Check the ID is unused for a NEW deployment. Preserve the ID for state adoption.
+# This file is not automatically loaded by OpenTofu.
+node_name           = "example-pve-a"
+container_id        = 19001
+hostname            = "example-web-a"
+bridge              = "vmbr-example"
+datastore_id        = "example-lvm"
+template_file_id    = "example-templates:vztmpl/debian-13-standard_REPLACE-WITH-LOCAL-VERSION_amd64.tar.zst"
+ssh_public_key_path = "~/.ssh/example_lab_ed25519.pub"
