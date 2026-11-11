@@ -227,7 +227,7 @@ The source operator backed up `/etc/smartd.conf`, added `/dev/sda -d ignore` **b
 
 ## 10. Backup, prune, verify and GC can overlap
 
-The configured case schedule was: **node A 02:00 backup**, **node B 03:00 backup**, **PBS prune 04:00**, **verify 05:00**, **GC Sunday 06:00**, and a monthly ZFS scrub timer.
+The case had a **node A backup at 02:00**. **03:00 was suggested for node B, but its actual saved schedule was not independently confirmed**. PBS jobs were set/reported for **prune 04:00**, **verify 05:00**, **GC Sunday 06:00**, plus a monthly ZFS scrub timer.
 
 The first node-B backup run took well over 90 minutes. Thus its **03:00** run can overlap the **04:00** prune job, and two old mirrored disks may see competing I/O. This is a **plausible scheduling/throughput hazard**, **not a proven cause** of the shutdown timeout, umask error or other actual incidents.
 
