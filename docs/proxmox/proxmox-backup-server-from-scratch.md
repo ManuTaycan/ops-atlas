@@ -268,7 +268,7 @@ Create a **second** job at **Datacenter > Backup > Add**:
 | --- | --- |
 | Node | Second PVE host |
 | Storage | `pbs-vault` |
-| Schedule used in case | Daily **03:00** |
+| Proposed schedule in conversation | Daily **03:00**; exact saved setting **not independently confirmed** |
 | Selection | **All guests** on this host |
 | Initial mode | `Stop`; one running Linux VM refused shutdown |
 | **Revised final mode** | **Snapshot** |
@@ -300,7 +300,7 @@ pct list
 qm list
 ~~~
 
-**Schedule warning:** the source case had a **02:00 node-A backup**, **03:00 node-B backup**, **04:00 PBS prune**, **05:00 verify**, and **Sunday 06:00 GC**. Its first node-B run lasted well over an hour and a half. Therefore **03:00 and 04:00 can overlap** during a full/slow backup, and some other jobs may contend for old HDD I/O. These times describe what was configured, **not** a proven contention-free schedule. After measuring multiple real runs, shift jobs into adequately separated windows (or use suitable scheduling/serialization) and verify that the overnight window accommodates both hosts before relying on unattended recovery points.
+**Schedule warning:** node A was configured for **02:00**; **03:00 was proposed for node B but its saved schedule was not shown**. PBS maintenance was set/reported for **04:00 prune**, **05:00 verify**, and **Sunday 06:00 GC**. Its first node-B run lasted well over an hour and a half. Therefore **03:00 and 04:00 can overlap** during a full/slow backup, and some other jobs may contend for old HDD I/O. These times describe what was configured, **not** a proven contention-free schedule. After measuring multiple real runs, shift jobs into adequately separated windows (or use suitable scheduling/serialization) and verify that the overnight window accommodates both hosts before relying on unattended recovery points.
 
 ## 7. Central PBS housekeeping jobs
 
@@ -521,7 +521,7 @@ Store a **private**, tested export of necessary `/etc/proxmox-backup/` configura
 
 **Directly observed in the source case:** PBS installed and available; ZFS mirror and datastore online; PVE storage active; two critical LXCs backed up in stop mode; one logging LXC **destroyed and restored successfully**; node-A scheduled job manually run with `TASK OK`; node-B first job completed **five of six** guests and reported an error on one VM; that VM separately passed a snapshot backup; node-B job configuration then changed to snapshot; verify job reported **TASK OK / zero errors**; initial ZFS scrub completed `0B repaired` with zero errors; monthly scrub timer enabled; `smartd` discovered expected disks and later intentionally ignored one firmware-risk model.
 
-**Configured/reported, but not end-to-end proven:** prune schedule, GC schedule, the next overnight scheduled backup cycles, full node-B post-change job success, Tailscale certificate auto-renewal, any alert delivery, an independent offsite copy, PBS OS-disk disaster recovery, and recovery of external media bind-mount data. Do not convert these into completed tests merely because the corresponding UI settings exist.
+**Configured/reported, but not end-to-end proven:** prune schedule, GC schedule, node B's proposed 03:00 schedule, the next overnight scheduled backup cycles, full node-B post-change job success, Tailscale certificate auto-renewal, any alert delivery, an independent offsite copy, PBS OS-disk disaster recovery, and recovery of external media bind-mount data. Do not convert these into completed tests merely because the corresponding UI settings exist.
 
 ## 12. Troubleshooting and remaining risks
 
