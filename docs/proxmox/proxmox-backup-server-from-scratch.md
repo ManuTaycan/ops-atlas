@@ -212,7 +212,27 @@ The original setup installed Tailscale natively on PBS and used its private over
 1. Install Tailscale by following its **current official Linux instructions**, authenticate PBS to the correct tailnet and check `tailscale status` and `tailscale ip -4`.
 2. Restrict access with appropriate tailnet ACL/grant policy. Do not expose PBS's management API publicly solely to make it reachable remotely.
 3. For a browser-trusted HTTPS hostname, enable **MagicDNS** and **HTTPS certificates** in Tailscale admin settings and request a certificate with `tailscale cert` for the private tailnet hostname. The full name is private environment data; keep it out of public documentation.
-4. If choosing custom PBS TLS certificate files, the PBS proxy reads `/etc/proxmox-backup/proxy.pem` and `/etc/proxmox-backup/proxy.key`. The official PBS guidance uses owner `root`, group `backup`, mode `0640`, then `systemctl reload proxmox-backup-proxy` (reload, not a disruptive restart). Back up existing certificate metadata before changes. [6]
+4. For a **manual** Tailscale certificate installation, after installing Tailscale from [its documented Linux package instructions](https://tailscale.com/docs/install/linux), run these commands **on PBS**. Replace the demonstrably fictional FQDN with **the real full DNS name shown for your own node**, and do not paste it into public Git:
+
+~~~bash
+tailscale up
+tailscale status
+tailscale ip -4
+
+# Replace with this machine's actual MagicDNS FQDN first.
+FQDN='pbs.your-tailnet.ts.net'
+umask 077
+tailscale cert --cert-file=/root/pbs-tailnet.crt --key-file=/root/pbs-tailnet.key "$FQDN"
+openssl x509 -in /root/pbs-tailnet.crt -noout -dates -subject
+install -o root -g backup -m 0640 /root/pbs-tailnet.crt /etc/proxmox-backup/proxy.pem
+install -o root -g backup -m 0640 /root/pbs-tailnet.key /etc/proxmox-backup/proxy.key
+systemctl reload proxmox-backup-proxy
+openssl x509 -in /etc/proxmox-backup/proxy.pem -noout -dates -fingerprint -sha256
+~~~
+
+**This replaces the active HTTPS certificate**, so any PVE storage with the old fingerprint pin can fail immediately. Perform only in a maintenance window and update/verify PVE trust as part of the same change. Securely remove unused temporary key copies after validation. If you do not need a trusted tailnet HTTPS hostname, skip these steps and keep the functional self-signed/fingerprint approach.
+
+5. If choosing custom PBS TLS certificate files, the PBS proxy reads `/etc/proxmox-backup/proxy.pem` and `/etc/proxmox-backup/proxy.key`. The official PBS guidance uses owner `root`, group `backup`, mode `0640`, then `systemctl reload proxmox-backup-proxy` (reload, not a disruptive restart). Back up existing certificate metadata before changes. [6]
 5. Validate the exact hostname and certificate chain from the client. **File-based Tailscale certificates are not installed or renewed automatically by `tailscaled`.** Schedule renewal, secure file installation and proxy reload; then verify the next expiry. **This automatic deployment was not completed or tested in the source case.** [7]
 6. **Certificate rotation can invalidate PVE storage fingerprint pins.** If pinned, update the PVE fingerprint before its next scheduled backups; alternately design and test genuine CA + hostname validation without a pinned fingerprint. The source case had not completed this transition.
 
